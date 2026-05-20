@@ -44,39 +44,46 @@ function createGrid(size) {
 
     square.dataset.darkness = 0;
 
-    square.addEventListener("mousedown", () => {
-      isDrawing = true;
-      draw(square);
-    });
-
-    square.addEventListener("mouseover", () => {
-      if (isDrawing) draw(square);
-    });
-
-    square.addEventListener("touchmove", (e) => {
-      const touch = e.touches[0];
-
-      const element = document.elementFromPoint(
-        touch.clientX,
-        touch.clientY
-      );
-
-      if (element && element.dataset.darkness !== undefined) {
-        draw(element);
-      }
-    });
-
     container.appendChild(square);
   }
 }
+
+window.addEventListener("mousedown", () => {
+  isDrawing = true;
+});
 
 window.addEventListener("mouseup", () => {
   isDrawing = false;
 });
 
-window.addEventListener("touchend", () => {
-  isDrawing = false;
+container.addEventListener("mousemove", (e) => {
+  if (!isDrawing) return;
+
+  const element = document.elementFromPoint(e.clientX, e.clientY);
+
+  if (element && element.dataset.darkness !== undefined) {
+    draw(element);
+  }
 });
+
+container.addEventListener(
+  "touchmove",
+  (e) => {
+    e.preventDefault();
+
+    const touch = e.touches[0];
+
+    const element = document.elementFromPoint(
+      touch.clientX,
+      touch.clientY
+    );
+
+    if (element && element.dataset.darkness !== undefined) {
+      draw(element);
+    }
+  },
+  { passive: false }
+);
 
 createGrid(GRID_SIZE);
 

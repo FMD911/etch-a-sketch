@@ -28,10 +28,12 @@ button {
   width: min(960px, 90vw);
   height: min(960px, 90vw);
 
-  border: 2px solid black;
-
   display: flex;
   flex-wrap: wrap;
+
+  border: 2px solid black;
+
+  touch-action: none;
 }
 
 #container div {
