@@ -1,7 +1,11 @@
 const container = document.querySelector("#container");
-const button = document.querySelector("#resize-btn");
+
+const resizeBtn = document.querySelector("#resize-btn");
+const resetBtn = document.querySelector("#reset-btn");
+const modeBtn = document.querySelector("#mode-btn");
 
 let GRID_SIZE = 16;
+let rainbowMode = false;
 
 function createGrid(size) {
   container.innerHTML = "";
@@ -14,10 +18,17 @@ function createGrid(size) {
     square.style.width = `${squareSize}px`;
     square.style.height = `${squareSize}px`;
 
-    // darkness tracking
     square.dataset.darkness = 0;
 
     square.addEventListener("mouseenter", () => {
+      if (rainbowMode) {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        square.style.backgroundColor = `rgb(${r},${g},${b})`;
+        return;
+      }
+
       let level = Number(square.dataset.darkness);
 
       if (level < 10) {
@@ -25,9 +36,8 @@ function createGrid(size) {
         square.dataset.darkness = level;
       }
 
-      const darkness = level * 25;
-
-      square.style.backgroundColor = `rgb(${255 - darkness}, ${255 - darkness}, ${255 - darkness})`;
+      const shade = 255 - level * 25;
+      square.style.backgroundColor = `rgb(${shade},${shade},${shade})`;
     });
 
     container.appendChild(square);
@@ -36,11 +46,21 @@ function createGrid(size) {
 
 createGrid(GRID_SIZE);
 
-button.addEventListener("click", () => {
+resizeBtn.addEventListener("click", () => {
   let size = parseInt(prompt("Enter grid size (max 100):"));
 
   if (size > 100) size = 100;
   if (size < 1) size = 1;
 
-  createGrid(size);
+  GRID_SIZE = size;
+  createGrid(GRID_SIZE);
+});
+
+resetBtn.addEventListener("click", () => {
+  createGrid(GRID_SIZE);
+});
+
+modeBtn.addEventListener("click", () => {
+  rainbowMode = !rainbowMode;
+  modeBtn.textContent = rainbowMode ? "Normal Mode" : "Rainbow Mode";
 });

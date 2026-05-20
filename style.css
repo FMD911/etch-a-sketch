@@ -10,17 +10,31 @@ body {
   padding: 20px;
 }
 
+h1 {
+  margin: 10px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
 #container {
   width: 960px;
   height: 960px;
   border: 2px solid black;
+
   display: flex;
   flex-wrap: wrap;
 }
 
 #container div {
-  width: 60px;
-  height: 60px;
+  box-sizing: border-box;
   background: white;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
 }
