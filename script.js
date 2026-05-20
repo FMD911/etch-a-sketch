@@ -10,7 +10,8 @@ let rainbowMode = false;
 function createGrid(size) {
   container.innerHTML = "";
 
-  const squareSize = 960 / size;
+    const containerSize = container.clientWidth;
+    const squareSize = containerSize / size;
 
   for (let i = 0; i < size * size; i++) {
     const square = document.createElement("div");

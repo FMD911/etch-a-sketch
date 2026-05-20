@@ -25,8 +25,9 @@ button {
 }
 
 #container {
-  width: 960px;
-  height: 960px;
+  width: min(960px, 90vw);
+  height: min(960px, 90vw);
+
   border: 2px solid black;
 
   display: flex;
