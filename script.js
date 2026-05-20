@@ -11,26 +11,25 @@ let isDrawing = false;
 function draw(square) {
   if (!square || square.dataset.darkness === undefined) return;
 
-  if (!rainbowMode) {
-    let level = Number(square.dataset.darkness);
+  if (rainbowMode) {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
 
-    if (level < 10) {
-      level++;
-      square.dataset.darkness = level;
-    }
-
-    const shade = 255 - level * 25;
-    square.style.backgroundColor = `rgb(${shade},${shade},${shade})`;
+    square.style.backgroundColor = `rgb(${r},${g},${b})`;
     return;
   }
 
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
+  let level = Number(square.dataset.darkness);
 
-  square.style.backgroundColor = `rgb(${r},${g},${b})`;
+  if (level < 10) {
+    level++;
+    square.dataset.darkness = level;
+  }
+
+  const shade = 255 - level * 25;
+  square.style.backgroundColor = `rgb(${shade},${shade},${shade})`;
 }
-
 function createGrid(size) {
   container.innerHTML = "";
 
@@ -52,15 +51,17 @@ function createGrid(size) {
 container.addEventListener("pointerdown", (e) => {
   isDrawing = true;
 
-  const el = document.elementFromPoint(e.clientX, e.clientY);
-  if (el && el.dataset.darkness !== undefined) draw(el);
+  if (e.target.dataset.darkness !== undefined) {
+    draw(e.target);
+  }
 });
 
 container.addEventListener("pointermove", (e) => {
   if (!isDrawing) return;
 
-  const el = document.elementFromPoint(e.clientX, e.clientY);
-  if (el && el.dataset.darkness !== undefined) draw(el);
+  if (e.target.dataset.darkness !== undefined) {
+    draw(e.target);
+  }
 });
 
 window.addEventListener("pointerup", () => {
@@ -85,8 +86,5 @@ resetBtn.addEventListener("click", () => {
 
 modeBtn.addEventListener("click", () => {
   rainbowMode = !rainbowMode;
-
-  isDrawing = false;
-
   modeBtn.textContent = rainbowMode ? "Normal Mode" : "Rainbow Mode";
 });
