@@ -11,3 +11,24 @@ for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
 
   container.appendChild(square);
 }
+
+const squares = document.querySelectorAll("#container div");
+
+squares.forEach((square) => {
+  square.addEventListener("mouseenter", () => {
+    square.style.backgroundColor = "black";
+  });
+});
+
+const button = document.querySelector("#resize-btn");
+
+button.addEventListener("click", () => {
+  let size = prompt("Enter grid size (max 100):");
+
+  size = parseInt(size);
+
+  if (size > 100) size = 100;
+  if (size < 1) size = 1;
+
+  console.log("New grid size:", size);
+});
