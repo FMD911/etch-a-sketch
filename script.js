@@ -11,9 +11,9 @@ let isDrawing = false;
 function draw(square) {
   if (!square || square.dataset.darkness === undefined) return;
 
-  let level = Number(square.dataset.darkness);
-
   if (!rainbowMode) {
+    let level = Number(square.dataset.darkness);
+
     if (level < 10) {
       level++;
       square.dataset.darkness = level;
@@ -21,12 +21,14 @@ function draw(square) {
 
     const shade = 255 - level * 25;
     square.style.backgroundColor = `rgb(${shade},${shade},${shade})`;
-  } else {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    square.style.backgroundColor = `rgb(${r},${g},${b})`;
+    return;
   }
+
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+
+  square.style.backgroundColor = `rgb(${r},${g},${b})`;
 }
 
 function createGrid(size) {
@@ -47,44 +49,23 @@ function createGrid(size) {
   }
 }
 
-window.addEventListener("mousedown", () => {
+container.addEventListener("pointerdown", (e) => {
   isDrawing = true;
+
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if (el && el.dataset.darkness !== undefined) draw(el);
 });
 
-window.addEventListener("mouseup", () => {
-  isDrawing = false;
-});
-
-container.addEventListener("mousemove", (e) => {
+container.addEventListener("pointermove", (e) => {
   if (!isDrawing) return;
 
-  const element = document.elementFromPoint(e.clientX, e.clientY);
-
-  if (element && element.dataset.darkness !== undefined) {
-    draw(element);
-  }
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if (el && el.dataset.darkness !== undefined) draw(el);
 });
 
-container.addEventListener(
-  "touchmove",
-  (e) => {
-    if (!isDrawing) return;
-
-    e.preventDefault();
-
-    const touch = e.touches[0];
-
-    const element = document.elementFromPoint(
-      touch.clientX,
-      touch.clientY
-    );
-
-    if (element && element.dataset.darkness !== undefined) {
-      draw(element);
-    }
-  },
-  { passive: false }
-);
+window.addEventListener("pointerup", () => {
+  isDrawing = false;
+});
 
 createGrid(GRID_SIZE);
 
@@ -104,5 +85,8 @@ resetBtn.addEventListener("click", () => {
 
 modeBtn.addEventListener("click", () => {
   rainbowMode = !rainbowMode;
+
+  isDrawing = false;
+
   modeBtn.textContent = rainbowMode ? "Normal Mode" : "Rainbow Mode";
 });
