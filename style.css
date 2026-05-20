@@ -14,18 +14,13 @@ body {
   width: 960px;
   height: 960px;
   border: 2px solid black;
-
-  display: grid;
-  grid-template-columns: repeat(16, 1fr);
-  grid-template-rows: repeat(16, 1fr);
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #container div {
-  width: 20px;
-  height: 20px;
-
-  background: red !important;
-  border: 1px solid black !important;
-
-  display: block !important;
+  width: 60px;
+  height: 60px;
+  background: white;
+  border: 1px solid #ddd;
 }

@@ -4,7 +4,7 @@ const button = document.querySelector("#resize-btn");
 let GRID_SIZE = 16;
 
 function createGrid(size) {
-  container.innerHTML = ""; 
+  container.innerHTML = "";
 
   const squareSize = 960 / size;
 
@@ -14,8 +14,20 @@ function createGrid(size) {
     square.style.width = `${squareSize}px`;
     square.style.height = `${squareSize}px`;
 
+    // darkness tracking
+    square.dataset.darkness = 0;
+
     square.addEventListener("mouseenter", () => {
-      square.style.backgroundColor = "black";
+      let level = Number(square.dataset.darkness);
+
+      if (level < 10) {
+        level++;
+        square.dataset.darkness = level;
+      }
+
+      const darkness = level * 25;
+
+      square.style.backgroundColor = `rgb(${255 - darkness}, ${255 - darkness}, ${255 - darkness})`;
     });
 
     container.appendChild(square);
